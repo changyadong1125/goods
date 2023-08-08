@@ -1,0 +1,16 @@
+<configuration>
+    <!-- 控制台输出日志 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 设置 MyBatis 日志级别为 DEBUG -->
+    <logger name="org.mybatis" level="DEBUG" />
+
+    <!-- 根日志级别设置为 INFO -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

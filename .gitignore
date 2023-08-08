@@ -1,0 +1,5 @@
+# Project exclude paths
+/goods-business/target/
+/goods-common/target/
+/goods-system/target/
+/goods-web/target/
