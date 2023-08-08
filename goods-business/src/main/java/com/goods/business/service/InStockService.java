@@ -1,6 +1,6 @@
 package com.goods.business.service;
 
-import com.goods.common.model.business.Product;
+import com.goods.common.error.BusinessException;
 import com.goods.common.vo.business.InStockVO;
 import com.goods.common.vo.system.PageVO;
 
@@ -35,7 +35,7 @@ public interface InStockService {
      * version: 1.0
      * description:添加到回收站
      */
-    PageVO<Product> remove(Integer id);
+    void remove(Long id) throws BusinessException;
 
     /**
      * return:
@@ -44,4 +44,20 @@ public interface InStockService {
      * description:入库
      */
     void addIntoStock(InStockVO inStockVO);
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:通过审核
+     */
+    void publish(Long id) throws BusinessException;
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:删除
+     */
+    void delete(Long id);
 }

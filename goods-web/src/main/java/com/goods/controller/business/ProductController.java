@@ -6,6 +6,7 @@ import com.goods.common.error.BusinessException;
 import com.goods.common.model.business.Product;
 import com.goods.common.model.business.ProductCategory;
 import com.goods.common.response.ResponseBean;
+import com.goods.common.vo.business.ProductStockVO;
 import com.goods.common.vo.business.ProductVO;
 import com.goods.common.vo.system.PageVO;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
@@ -143,8 +144,37 @@ public class ProductController {
                                         @RequestParam(required = false) Integer status,
                                         @RequestParam(required = false) String categorys,
                                         @RequestParam(required = false) String name) {
-        PageVO<Product> products = productService.findProducts(pageNum, pageSize, status,categorys,name);
+        PageVO<Product> products = productService.findProducts(pageNum, pageSize, status, categorys, name);
         return ResponseBean.success(products);
+    }
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description: 获取物资库存
+     */
+    @GetMapping("/findProductStocks")
+    public ResponseBean<?> findProductStocks(@RequestParam Integer pageSize,
+                                             @RequestParam Integer pageNum,
+                                             @RequestParam(required = false) String categorys,
+                                             @RequestParam(required = false) String name) {
+        PageVO<ProductStockVO> pageVO = productService.findProductStocks(pageSize, pageNum,categorys,name);
+        return ResponseBean.success(pageVO);
+    }
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:获取所有库存
+     */
+    @GetMapping("/findAllStocks")
+    public ResponseBean<?> findAllStocks(@RequestParam Integer pageSize,
+                                             @RequestParam Integer pageNum,
+                                         @RequestParam(required = false) String categorys,
+                                         @RequestParam(required = false) String name) {
+        List<ProductStockVO> allStocks = productService.findAllStocks(pageSize, pageNum,categorys,name);
+        return ResponseBean.success(allStocks);
     }
 
 }

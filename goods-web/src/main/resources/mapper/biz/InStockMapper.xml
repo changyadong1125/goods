@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.goods.business.mapper.InStockMapper">
     <select id="detail" resultType="com.goods.common.vo.business.InStockItemVO">
-        SELECT * ,bisi.`product_number` COUNT  FROM 	`biz_in_stock` bis
-                             LEFT JOIN `biz_in_stock_info` bisi
-                                       ON bis.`in_num` = bisi.`in_num`
-                             LEFT JOIN `biz_product` bp
-                                       ON bisi.`p_num` = bp.p_num
-
+        SELECT *, bisi.`product_number` COUNT
+        FROM `biz_in_stock` bis
+                 LEFT JOIN `biz_in_stock_info` bisi
+                           ON bis.`in_num` = bisi.`in_num`
+                 LEFT JOIN `biz_product` bp
+                           ON bisi.`p_num` = bp.p_num
         WHERE bis.id = #{id}
     </select>
 
@@ -43,10 +43,10 @@
         LIMIT ${pageNum},${pageSize}
     </select>
     <select id="getSupplierVO" resultType="com.goods.common.vo.business.InStockVO">
-        SELECT *FROM `biz_in_stock` bis
-                         LEFT JOIN `biz_supplier` bs
-                                   ON bis.`supplier_id` = bs.id
-
+        SELECT *
+        FROM `biz_in_stock` bis
+                 LEFT JOIN `biz_supplier` bs
+                           ON bis.`supplier_id` = bs.id
         WHERE bis.id = #{id}
     </select>
 </mapper>

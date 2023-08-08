@@ -3,17 +3,22 @@ package com.goods.business.service.imp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.goods.business.mapper.ProductMapper;
+import com.goods.business.mapper.ProductStockMapper;
 import com.goods.business.service.ProductService;
 import com.goods.common.error.BusinessCodeEnum;
 import com.goods.common.error.BusinessException;
 import com.goods.common.model.business.Product;
+import com.goods.common.model.business.ProductStock;
+import com.goods.common.vo.business.ProductStockVO;
 import com.goods.common.vo.business.ProductVO;
 import com.goods.common.vo.system.PageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
+
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,6 +37,8 @@ import java.util.stream.Collectors;
 public class ProductServiceImp implements ProductService {
     @Resource
     private ProductMapper productMapper;
+    @Resource
+    private ProductStockMapper productStockMapper;
 
     /**
      * return:
@@ -224,14 +231,66 @@ public class ProductServiceImp implements ProductService {
      */
     @Override
     public PageVO<Product> findProducts(Integer pageNum, Integer pageSize, Integer status, String categorys, String name) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         Example E = new Example(Product.class);
         Example.Criteria criteria = E.createCriteria();
-        criteria.andEqualTo("status",status);
-        buildCategoryCriteria(categorys,criteria);
+        criteria.andEqualTo("status", status);
+        //构建分类条件
+        buildCategoryCriteria(categorys, criteria);
+        //构建name条件
+        ProductVO productVO = new ProductVO();
+        productVO.setName(name);
+        buildOtherCriteria(productVO, criteria);
         List<Product> productList = productMapper.selectByExample(E);
         PageInfo<Product> productPageInfo = new PageInfo<>(productList);
-        return new PageVO<>(productPageInfo.getTotal(),productList);
+        return new PageVO<>(productPageInfo.getTotal(), productList);
+    }
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:获取物资
+     */
+    @Override
+    public PageVO<ProductStockVO> findProductStocks(Integer pageSize, Integer pageNum, String categorys, String name) {
+        PageHelper.startPage(pageNum, pageSize);
+        Example E = new Example(Product.class);
+        Example.Criteria C = E.createCriteria();
+        //构建分类条件
+        this.buildCategoryCriteria(categorys, C);
+        //构建name条件
+        ProductVO productVO = new ProductVO();
+        productVO.setName(name);
+        buildOtherCriteria(productVO, C);
+        List<Product> products = productMapper.selectByExample(E);
+        List<ProductStockVO> productVOList = products.stream().map(product -> {
+            ProductStockVO productStockVO = new ProductStockVO();
+            BeanUtils.copyProperties(product, productStockVO);
+            //设置库存
+            Example example = new Example(ProductStock.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("pNum", product.getPNum());
+            List<ProductStock> productStocks = productStockMapper.selectByExample(example);
+            if (!CollectionUtils.isEmpty(productStocks)) {
+                productStockVO.setStock(productStocks.get(0).getStock());
+            }
+            return productStockVO;
+        }).collect(Collectors.toList());
+        PageInfo<ProductStockVO> productVOPageInfo = new PageInfo<>(productVOList);
+        return new PageVO<>(productVOPageInfo.getTotal(), productVOList);
+    }
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:获取所有库存
+     */
+    @Override
+    public List<ProductStockVO> findAllStocks(Integer pageSize, Integer pageNum, String categorys, String name) {
+        PageVO<ProductStockVO> productStocks = this.findProductStocks(pageSize, pageNum, categorys, name);
+        return productStocks.getRows();
     }
 
     private void buildCategoryCriteria(String categoryKeys, Example.Criteria criteria) {

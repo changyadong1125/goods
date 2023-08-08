@@ -1,6 +1,6 @@
 package com.goods.controller.business;
 import com.goods.business.service.InStockService;
-import com.goods.common.model.business.Product;
+import com.goods.common.error.BusinessException;
 import com.goods.common.response.ResponseBean;
 import com.goods.common.vo.business.InStockVO;
 import com.goods.common.vo.system.PageVO;
@@ -50,17 +50,19 @@ public class InStockController {
         HashMap<String, Object> detail = inStockService.detail(id, pageNum);
         return ResponseBean.success(detail);
     }
+
     /**
      * return:
      * author: smile
      * version: 1.0
      * description:添加回收站
      */
-    @GetMapping("remove/{id}")
-    public ResponseBean<?> remove(@PathVariable Integer id) {
-        PageVO<Product> products = inStockService.remove(id);
-        return ResponseBean.success(products);
+    @PutMapping("remove/{id}")
+    public ResponseBean<?> remove(@PathVariable Long id) throws BusinessException {
+        inStockService.remove(id);
+        return ResponseBean.success();
     }
+
     /**
      * return:
      * author: smile
@@ -68,8 +70,31 @@ public class InStockController {
      * description:入库
      */
     @PostMapping("/addIntoStock")
-    public ResponseBean<?> addIntoStock(@RequestBody InStockVO inStockVO){
+    public ResponseBean<?> addIntoStock(@RequestBody InStockVO inStockVO) {
         inStockService.addIntoStock(inStockVO);
+        return ResponseBean.success();
+    }
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:通过审核
+     */
+    @PutMapping("/publish/{id}")
+    public ResponseBean<?> publish(@PathVariable Long id) throws BusinessException {
+        inStockService.publish(id);
+        return ResponseBean.success();
+    }
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:删除
+     */
+    @GetMapping ("/delete/{id}")
+    public ResponseBean<?> delete(@PathVariable Long id) throws BusinessException {
+        inStockService.delete(id);
         return ResponseBean.success();
     }
 }
