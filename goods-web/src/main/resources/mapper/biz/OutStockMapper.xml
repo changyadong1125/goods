@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goods.business.mapper.OutStockMapper">
+
+    <select id="findOutStockList" resultType="com.goods.common.vo.business.OutStockVO">
+        SELECT
+        bos.`id` ,bos.`out_num`,bos.`type` ,bos.`priority`,bc.`name`,bos.`product_number`,
+        bc.`phone`,bos.`status`,bos.`operator`,bos.`create_time`
+        FROM `biz_out_stock` bos
+        LEFT JOIN `biz_consumer` bc
+        ON bos.`consumer_id` = bc.`id`
+        <where>
+            <if test="status != null">
+                (bos.status = #{status})
+            </if>
+            <if test="type != null">
+                AND (bos.type = #{type})
+            </if>
+            <if test="outNum != null and outNum != ''">
+                AND (bos.out_Num LIKE CONCAT('%', #{outNum}, '%'))
+            </if>
+        </where>
+        LIMIT #{offset},#{pageSize}
+    </select>
+    <select id="findOUtStockDetail" resultType="com.goods.common.vo.business.OutStockItemVO">
+        SELECT *, bosi.product_number COUNT
+        FROM `biz_out_stock` bos
+                 LEFT JOIN `biz_out_stock_info` bosi
+                           ON bos.`out_num` = bosi.out_num
+                 LEFT JOIN `biz_product` bp
+                           ON bosi.p_num = bp.p_num
+        WHERE bos.id = #{id}
+    </select>
+    <select id="findConsumerVO" resultType="com.goods.common.vo.business.ConsumerVO">
+        SELECT *
+        FROM `biz_out_stock` bos
+                 LEFT JOIN `biz_consumer` bc
+                           ON bos.`consumer_id` = bc.`id`
+        WHERE bos.`id` = #{id}
+    </select>
+</mapper>

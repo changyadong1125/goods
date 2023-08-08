@@ -4,6 +4,8 @@ import com.goods.common.model.business.Consumer;
 import com.goods.common.vo.business.ConsumerVO;
 import com.goods.common.vo.system.PageVO;
 
+import java.util.List;
+
 /**
  * project:goods
  * package:com.goods.business.service
@@ -54,4 +56,12 @@ public interface ConsumerService {
      * description:删除
      */
     void delete(Long id);
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:所有去向
+     */
+    List<ConsumerVO> findAll();
 }

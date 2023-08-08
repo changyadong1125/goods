@@ -18,6 +18,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -61,7 +62,7 @@ public class InStockServiceImp implements InStockService {
      * return:
      * author: smile
      * version: 1.0
-     * description:
+     * description:明细
      */
     @Override
     public HashMap<String, Object> detail(Integer id, Integer pageNum) {
@@ -79,46 +80,32 @@ public class InStockServiceImp implements InStockService {
      * return:
      * author: smile
      * version: 1.0
-     * description:回收站
+     * description:入库
      */
-    @Override
-    public void remove(Long id) throws BusinessException {
-        try {
-            extracted(id, 1);
-        } catch (Exception e) {
-            throw new BusinessException(BusinessCodeEnum.valueOf("修改失败！"));
-        }
-    }
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     @SuppressWarnings("all")
     public void addIntoStock(InStockVO inStockVO) {
-        Long supplierId = inStockVO.getSupplierId();
         List<Object> products = inStockVO.getProducts();
+
         InStock inStock = new InStock();
-        Supplier supplier = new Supplier();
+        inStock.setInNum(UUID.randomUUID().toString().replaceAll("-", ""));
+        BeanUtils.copyProperties(inStockVO, inStock);
+
         //判断suppId是否存在
+        Long supplierId = inStockVO.getSupplierId();
+        Supplier supplier = new Supplier();
         if (null == supplierId) {
             supplier.setCreateTime(new Date());
             supplier.setModifiedTime(new Date());
             BeanUtils.copyProperties(inStockVO, supplier);
             supplierMapper.insert(supplier);
             inStock.setSupplierId(supplier.getId());
-        } else {
-            BeanUtils.copyProperties(inStockVO, inStock);
         }
-        //如果suppId不存在 进行入库操作
-        inStock.setCreateTime(new Date());
-        inStock.setStatus(2);
-        //todo:
-        inStock.setOperator("admin");
-        inStock.setModified(new Date());
-        inStock.setProductNumber(products.size());
-        inStock.setInNum(UUID.randomUUID().toString().replaceAll("-", ""));
-        inStockMapper.insert(inStock);
+
         //存储入库明细
-        List<InStockInfo> inStockInfoList = products.stream().map(product -> {
+        AtomicInteger atomicInteger = new AtomicInteger();
+        products.stream().forEach(product -> {
             InStockInfo inStockInfo = new InStockInfo();
             inStockInfo.setInNum(inStock.getInNum());
             Map map = (Map) product;
@@ -126,9 +113,18 @@ public class InStockServiceImp implements InStockService {
             inStockInfo.setProductNumber((Integer) map.get("productNumber"));
             inStockInfo.setCreateTime(new Date());
             inStockInfo.setModifiedTime(new Date());
-            return inStockInfo;
-        }).collect(Collectors.toList());
-        inStockInfoList.forEach(inStockInfo -> inStockInfoMapper.insert(inStockInfo));
+            atomicInteger.addAndGet((Integer) map.get("productNumber"));
+            inStockInfoMapper.insert(inStockInfo);
+        });
+
+        //如果suppId不存在 进行入库操作
+        inStock.setCreateTime(new Date());
+        inStock.setStatus(2);
+        //todo:
+        inStock.setOperator("admin");
+        inStock.setModified(new Date());
+        inStock.setProductNumber(atomicInteger.get());
+        inStockMapper.insert(inStock);
     }
 
     /**
@@ -176,7 +172,20 @@ public class InStockServiceImp implements InStockService {
         //删除入库记录
         inStockMapper.deleteByPrimaryKey(id);
     }
-
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:回收站
+     */
+    @Override
+    public void remove(Long id) throws BusinessException {
+        try {
+            extracted(id, 1);
+        } catch (Exception e) {
+            throw new BusinessException(BusinessCodeEnum.valueOf("修改失败！"));
+        }
+    }
     private void extracted(Long id, Integer status) {
         InStock inStock = inStockMapper.selectByPrimaryKey(id);
         inStock.setStatus(status);

@@ -108,4 +108,19 @@ public class ConsumerServiceImp implements ConsumerService {
     public void delete(Long id) {
         consumerMapper.deleteByPrimaryKey(id);
     }
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:所有去向
+     */
+    @Override
+    public List<ConsumerVO> findAll() {
+        return consumerMapper.selectAll().stream().map(consumer -> {
+            ConsumerVO consumerVO = new ConsumerVO();
+            BeanUtils.copyProperties(consumer, consumerVO);
+            return consumerVO;
+        }).collect(Collectors.toList());
+    }
 }

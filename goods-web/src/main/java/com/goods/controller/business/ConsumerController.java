@@ -8,6 +8,7 @@ import com.goods.common.vo.system.PageVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * project:goods
@@ -86,5 +87,16 @@ public class ConsumerController {
     public ResponseBean<?> delete(@PathVariable Long id){
         consumerService.delete(id);
         return ResponseBean.success();
+    }
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:查询所有去向
+     */
+    @GetMapping("findAll")
+    public ResponseBean<?> findAll(){
+        List<ConsumerVO> consumerVOS =  consumerService.findAll();
+        return ResponseBean.success(consumerVOS);
     }
 }
