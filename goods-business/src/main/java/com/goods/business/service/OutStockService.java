@@ -37,7 +37,7 @@ public interface OutStockService {
      * version: 1.0
      * description:添加
      */
-    void addOutStock(OutStockVO outStockVO);
+    void addOutStock(OutStockVO outStockVO, String username);
 
     /**
      * return:

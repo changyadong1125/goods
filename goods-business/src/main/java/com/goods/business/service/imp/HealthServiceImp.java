@@ -1,4 +1,5 @@
 package com.goods.business.service.imp;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.goods.business.mapper.HealthMapper;
@@ -10,6 +11,7 @@ import com.goods.common.vo.system.PageVO;
 import com.goods.system.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -41,8 +43,11 @@ public class HealthServiceImp implements HealthService {
     public HealthVO isReport() {
         Health health = healthMapper.isReport();
         HealthVO healthVO = new HealthVO();
-        BeanUtils.copyProperties(health, healthVO);
-        return healthVO;
+        if (null != health) {
+            BeanUtils.copyProperties(health, healthVO);
+            return healthVO;
+        }
+        return null;
     }
 
     /**
@@ -52,9 +57,9 @@ public class HealthServiceImp implements HealthService {
      * description:打卡
      */
     @Override
-    public void report(Health health) {
+    public void report(Health health, String username) {
         health.setCreateTime(new Date());
-        User admin = userService.findUserByName("admin");
+        User admin = userService.findUserByName(username);
         health.setUserId(admin.getId());
         healthMapper.insert(health);
     }

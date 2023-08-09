@@ -2,10 +2,12 @@ package com.goods.controller.business;
 import com.goods.business.service.InStockService;
 import com.goods.common.error.BusinessException;
 import com.goods.common.response.ResponseBean;
+import com.goods.common.utils.JWTUtils;
 import com.goods.common.vo.business.InStockVO;
 import com.goods.common.vo.system.PageVO;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 
@@ -70,8 +72,10 @@ public class InStockController {
      * description:入库
      */
     @PostMapping("/addIntoStock")
-    public ResponseBean<?> addIntoStock(@RequestBody InStockVO inStockVO) {
-        inStockService.addIntoStock(inStockVO);
+    public ResponseBean<?> addIntoStock(@RequestBody InStockVO inStockVO, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String username = JWTUtils.getUsername(token);
+        inStockService.addIntoStock(inStockVO,username);
         return ResponseBean.success();
     }
 

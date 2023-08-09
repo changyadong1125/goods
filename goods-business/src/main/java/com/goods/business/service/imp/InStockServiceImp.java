@@ -83,7 +83,7 @@ public class InStockServiceImp implements InStockService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     @SuppressWarnings("all")
-    public void addIntoStock(InStockVO inStockVO) {
+    public void addIntoStock(InStockVO inStockVO, String username) {
         List<Object> products = inStockVO.getProducts();
 
         InStock inStock = new InStock();
@@ -118,8 +118,7 @@ public class InStockServiceImp implements InStockService {
         //如果suppId不存在 进行入库操作
         inStock.setCreateTime(new Date());
         inStock.setStatus(2);
-        //todo:
-        inStock.setOperator("admin");
+        inStock.setOperator(username);
         inStock.setModified(new Date());
         inStock.setProductNumber(atomicInteger.get());
         inStockMapper.insert(inStock);

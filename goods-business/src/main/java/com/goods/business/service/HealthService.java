@@ -27,7 +27,7 @@ public interface HealthService {
      * version: 1.0
      * description:打卡
      */
-    void report(Health health);
+    void report(Health health, String username);
     /**
      * return:
      * author: smile

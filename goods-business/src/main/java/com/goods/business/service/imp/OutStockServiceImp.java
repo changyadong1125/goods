@@ -1,4 +1,5 @@
 package com.goods.business.service.imp;
+
 import com.goods.business.mapper.*;
 import com.goods.business.service.OutStockService;
 import com.goods.common.error.BusinessCodeEnum;
@@ -12,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -79,7 +81,7 @@ public class OutStockServiceImp implements OutStockService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     @SuppressWarnings("all")
-    public void addOutStock(OutStockVO outStockVO) {
+    public void addOutStock(OutStockVO outStockVO, String username) {
         //获取detail
         List<Object> products = outStockVO.getProducts();
         //准备outStock
@@ -119,7 +121,7 @@ public class OutStockServiceImp implements OutStockService {
         outStock.setCreateTime(new Date());
         outStock.setProductNumber(atomicInteger.get());
         outStock.setStatus(2);
-        outStock.setOperator("admin");
+        outStock.setOperator(username);
         outStockMapper.insert(outStock);
     }
 

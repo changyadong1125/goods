@@ -2,10 +2,12 @@ package com.goods.controller.business;
 import com.goods.business.service.OutStockService;
 import com.goods.common.error.BusinessException;
 import com.goods.common.response.ResponseBean;
+import com.goods.common.utils.JWTUtils;
 import com.goods.common.vo.business.OutStockVO;
 import com.goods.common.vo.system.PageVO;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -60,8 +62,10 @@ public class OutStockController {
      * description:分发物资
      */
     @PostMapping("/addOutStock")
-    public ResponseBean<?> addOutStock(@RequestBody OutStockVO outStockVO) {
-        outStockService.addOutStock(outStockVO);
+    public ResponseBean<?> addOutStock(@RequestBody OutStockVO outStockVO, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String username = JWTUtils.getUsername(token);
+        outStockService.addOutStock(outStockVO,username);
         return ResponseBean.success();
     }
 

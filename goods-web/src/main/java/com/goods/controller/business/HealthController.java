@@ -2,10 +2,12 @@ package com.goods.controller.business;
 import com.goods.business.service.HealthService;
 import com.goods.common.model.business.Health;
 import com.goods.common.response.ResponseBean;
+import com.goods.common.utils.JWTUtils;
 import com.goods.common.vo.business.HealthVO;
 import com.goods.common.vo.system.PageVO;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -43,8 +45,10 @@ public class HealthController {
      * description:打卡
      */
     @PostMapping("report")
-    public ResponseBean<?> report(@RequestBody Health health) {
-        healthService.report(health);
+    public ResponseBean<?> report(@RequestBody Health health, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String username = JWTUtils.getUsername(token);
+        healthService.report(health,username);
         return ResponseBean.success();
     }
 

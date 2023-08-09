@@ -42,7 +42,7 @@ public interface InStockService {
      * version: 1.0
      * description:入库
      */
-    void addIntoStock(InStockVO inStockVO);
+    void addIntoStock(InStockVO inStockVO, String username);
 
     /**
      * return:
