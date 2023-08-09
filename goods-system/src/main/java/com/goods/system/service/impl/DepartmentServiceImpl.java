@@ -1,6 +1,4 @@
 package com.goods.system.service.impl;
-
-
 import com.goods.common.enums.buisiness.BizUserTypeEnum;
 import com.goods.common.enums.system.UserStatusEnum;
 import com.goods.common.enums.system.UserTypeEnum;
@@ -26,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

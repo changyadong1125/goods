@@ -1,11 +1,7 @@
 package com.goods.business.service;
-
 import com.goods.common.error.BusinessException;
-import com.goods.common.vo.business.ConsumerVO;
 import com.goods.common.vo.business.OutStockVO;
 import com.goods.common.vo.system.PageVO;
-
-import java.util.List;
 import java.util.Map;
 
 /**

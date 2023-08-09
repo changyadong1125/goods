@@ -1,5 +1,4 @@
 package com.goods.business.service.imp;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.goods.business.mapper.ConsumerMapper;
@@ -11,7 +10,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
-
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;

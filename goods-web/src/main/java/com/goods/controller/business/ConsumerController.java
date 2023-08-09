@@ -1,12 +1,10 @@
 package com.goods.controller.business;
-
 import com.goods.business.service.ConsumerService;
 import com.goods.common.model.business.Consumer;
 import com.goods.common.response.ResponseBean;
 import com.goods.common.vo.business.ConsumerVO;
 import com.goods.common.vo.system.PageVO;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import java.util.List;
 

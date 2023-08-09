@@ -1,19 +1,13 @@
 package com.goods.controller.business;
-
 import com.goods.business.service.ProductService;
-import com.goods.common.error.BusinessCodeEnum;
 import com.goods.common.error.BusinessException;
 import com.goods.common.model.business.Product;
-import com.goods.common.model.business.ProductCategory;
 import com.goods.common.response.ResponseBean;
 import com.goods.common.vo.business.ProductStockVO;
 import com.goods.common.vo.business.ProductVO;
 import com.goods.common.vo.system.PageVO;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import java.awt.print.PrinterGraphics;
 import java.util.List;
 
 /**

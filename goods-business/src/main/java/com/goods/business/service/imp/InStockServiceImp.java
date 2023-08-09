@@ -1,5 +1,4 @@
 package com.goods.business.service.imp;
-
 import com.goods.business.mapper.*;
 import com.goods.business.service.InStockService;
 import com.goods.common.error.BusinessCodeEnum;
@@ -15,11 +14,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+
 
 /**
  * project:goods

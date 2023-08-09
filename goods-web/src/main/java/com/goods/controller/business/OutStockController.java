@@ -1,18 +1,11 @@
 package com.goods.controller.business;
-
 import com.goods.business.service.OutStockService;
 import com.goods.common.error.BusinessException;
-import com.goods.common.model.business.OutStock;
 import com.goods.common.response.ResponseBean;
-import com.goods.common.vo.business.ConsumerVO;
-import com.goods.common.vo.business.InStockVO;
 import com.goods.common.vo.business.OutStockVO;
 import com.goods.common.vo.system.PageVO;
-import org.omg.CORBA.INTERNAL;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 /**
