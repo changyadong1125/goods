@@ -14,5 +14,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @Description:
  */
 public interface HealthMapper  extends Mapper<Health> {
-    Health isReport();
+    Health isReport(long id);
 }

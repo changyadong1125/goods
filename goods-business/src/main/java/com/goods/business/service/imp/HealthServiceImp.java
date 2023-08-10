@@ -38,8 +38,9 @@ public class HealthServiceImp implements HealthService {
      * description:是否打卡
      */
     @Override
-    public HealthVO isReport() {
-        Health health = healthMapper.isReport();
+    public HealthVO isReport(String username) {
+        User admin = userService.findUserByName(username);
+        Health health = healthMapper.isReport(admin.getId());
         HealthVO healthVO = new HealthVO();
         if (null != health) {
             BeanUtils.copyProperties(health, healthVO);

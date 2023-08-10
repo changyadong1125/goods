@@ -33,8 +33,10 @@ public class HealthController {
      * description:是否打卡
      */
     @GetMapping("isReport")
-    public ResponseBean<?> isReport() {
-        HealthVO healthVO = healthService.isReport();
+    public ResponseBean<?> isReport(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String username = JWTUtils.getUsername(token);
+        HealthVO healthVO = healthService.isReport(username);
         return ResponseBean.success(healthVO);
     }
 

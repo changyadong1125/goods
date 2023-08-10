@@ -3,6 +3,6 @@
 <mapper namespace="com.goods.business.mapper.HealthMapper">
 
     <select id="isReport" resultType="com.goods.common.model.business.Health">
-        SELECT * FROM `biz_health` bh WHERE DATE(bh.`create_time`) = DATE(NOW())
+        SELECT * FROM `biz_health` bh WHERE DATE(bh.`create_time`) = DATE(NOW()) and bh.user_id = #{id}
     </select>
 </mapper>

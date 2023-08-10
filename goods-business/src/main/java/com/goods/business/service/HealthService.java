@@ -20,7 +20,7 @@ public interface HealthService {
      * version: 1.0
      * description:是否打卡
      */
-    HealthVO isReport();
+    HealthVO isReport(String username);
     /**
      * return:
      * author: smile
