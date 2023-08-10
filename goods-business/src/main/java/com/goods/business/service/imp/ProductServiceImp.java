@@ -46,46 +46,52 @@ public class ProductServiceImp implements ProductService {
      * version: 1.0
      * description:物资列表分页展示
      */
-//    @Override    V1.0
-//    public PageVO<ProductVO> findProductList(Integer pageNum, Integer pageSize, String categoryKeys, ProductVO productVO) {
-//        //分页
-//        PageHelper.startPage(pageNum, pageSize);
-//        //构建查询条件
-//        Example E = new Example(Product.class);
-//        Example.Criteria C = E.createCriteria();
-//        //获取三级分类
-//        Long[] longs = null;
-//        if (!StringUtils.isEmpty(categoryKeys)) {
-//            List<Long> categoryKeyList = Arrays.stream(categoryKeys.split(",")).map(Long::parseLong).collect(Collectors.toList());
-//            longs = categoryKeyList.toArray(new Long[0]);
-//            //一级分类
-//            if (categoryKeyList.size() > 0 && !StringUtils.isEmpty(categoryKeyList.get(0))) {
-//               C.andEqualTo("oneCategoryId", categoryKeyList.get(0));
-//            }
-//            if (categoryKeyList.size() > 1 && !StringUtils.isEmpty(categoryKeyList.get(1))) {
-//                C.andEqualTo("twoCategoryId", categoryKeyList.get(1));
-//            }
-//            if (categoryKeyList.size() > 2 && !StringUtils.isEmpty(categoryKeyList.get(2))) {
-//                C.andEqualTo("threeCategoryId", categoryKeyList.get(2));
-//            }
-//        }
-//        if (null != productVO && !StringUtils.isEmpty(productVO.getName())) {
-//           C.andLike("name", "%" + productVO.getName() + "%");
-//        }
-//        if (null != productVO && !StringUtils.isEmpty(productVO.getStatus())) {
-//            C.andEqualTo("status", productVO.getStatus());
-//        }
-//        List<Product> products = productMapper.selectByExample(E);
-//        Long[] finalLongs = longs;
-//        List<ProductVO> productVOList = products.stream().map(P -> {
-//            ProductVO V = new ProductVO();
-//            BeanUtils.copyProperties(P, V);
-//            V.setCategoryKeys(finalLongs);
-//            return V;
-//        }).collect(Collectors.toList());
-//        PageInfo<Product> productPageInfo = new PageInfo<>(products);
-//        return new PageVO<>(productPageInfo.getTotal(), productVOList);
-//    }
+    public PageVO<ProductVO> findProductList_V1(Integer pageNum, Integer pageSize, String categoryKeys, ProductVO productVO) {
+        //分页
+        PageHelper.startPage(pageNum, pageSize);
+        //构建查询条件
+        Example E = new Example(Product.class);
+        Example.Criteria C = E.createCriteria();
+        //获取三级分类
+        Long[] longs = null;
+        if (!StringUtils.isEmpty(categoryKeys)) {
+            List<Long> categoryKeyList = Arrays.stream(categoryKeys.split(",")).map(Long::parseLong).collect(Collectors.toList());
+            longs = categoryKeyList.toArray(new Long[0]);
+            //一级分类
+            if (categoryKeyList.size() > 0 && !StringUtils.isEmpty(categoryKeyList.get(0))) {
+                C.andEqualTo("oneCategoryId", categoryKeyList.get(0));
+            }
+            if (categoryKeyList.size() > 1 && !StringUtils.isEmpty(categoryKeyList.get(1))) {
+                C.andEqualTo("twoCategoryId", categoryKeyList.get(1));
+            }
+            if (categoryKeyList.size() > 2 && !StringUtils.isEmpty(categoryKeyList.get(2))) {
+                C.andEqualTo("threeCategoryId", categoryKeyList.get(2));
+            }
+        }
+        if (null != productVO && !StringUtils.isEmpty(productVO.getName())) {
+            C.andLike("name", "%" + productVO.getName() + "%");
+        }
+        if (null != productVO && !StringUtils.isEmpty(productVO.getStatus())) {
+            C.andEqualTo("status", productVO.getStatus());
+        }
+        List<Product> products = productMapper.selectByExample(E);
+        Long[] finalLongs = longs;
+        List<ProductVO> productVOList = products.stream().map(P -> {
+            ProductVO V = new ProductVO();
+            BeanUtils.copyProperties(P, V);
+            V.setCategoryKeys(finalLongs);
+            return V;
+        }).collect(Collectors.toList());
+        PageInfo<Product> productPageInfo = new PageInfo<>(products);
+        return new PageVO<>(productPageInfo.getTotal(), productVOList);
+    }
+
+    /**
+     * return:
+     * author: smile
+     * version: 1.0
+     * description:物资列表分页展示
+     */
     @Override
     public PageVO<ProductVO> findProductList(Integer pageNum, Integer pageSize, String categoryKeys, ProductVO productVO) {
         // 分页

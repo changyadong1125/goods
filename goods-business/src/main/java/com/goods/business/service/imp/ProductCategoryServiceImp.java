@@ -1,4 +1,5 @@
 package com.goods.business.service.imp;
+
 import com.goods.business.mapper.ProductCategoryMapper;
 import com.goods.business.mapper.ProductMapper;
 import com.goods.business.service.ProductCategoryService;
@@ -19,7 +20,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * project:goods
+ * package:com.goods.business.service.imp
+ * class:OutStockServiceImp
+ *
+ * @author: smile
+ * @create: 2023/8/8-20:49
+ * @Version: v1.0
+ * @Description:
+ */
 @Service
 public class ProductCategoryServiceImp implements ProductCategoryService {
     @Resource
@@ -113,13 +123,13 @@ public class ProductCategoryServiceImp implements ProductCategoryService {
     @Override
     public ResponseBean<String> delete(Long id) throws BusinessException {
         if (hasChildCategories(id)) {
-            throw new BusinessException(BusinessCodeEnum.PARAMETER_ERROR,"该层级有子分类，不能删除");
+            throw new BusinessException(BusinessCodeEnum.PARAMETER_ERROR, "该层级有子分类，不能删除");
         }
 
         ProductCategory productCategory = productCategoryMapper.selectByPrimaryKey(id);
         if (!isTopLevelCategory(productCategory)) {
             if (hasProductsInCategory(id)) {
-                throw new BusinessException(BusinessCodeEnum.PARAMETER_ERROR,"该层级有物资，不能删除");
+                throw new BusinessException(BusinessCodeEnum.PARAMETER_ERROR, "该层级有物资，不能删除");
             }
         }
 

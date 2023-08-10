@@ -31,7 +31,7 @@ public class ConsumerController {
      * description:物资去处分页列表展示
      */
     @GetMapping("/findConsumerList")
-    public ResponseBean<?> findConsumerList(@RequestParam Integer pageNum,
+    public ResponseBean<PageVO<ConsumerVO>> findConsumerList(@RequestParam Integer pageNum,
                                             @RequestParam Integer pageSize,
                                             @RequestParam(required = false) String name,
                                             @RequestParam(required = false) String address,

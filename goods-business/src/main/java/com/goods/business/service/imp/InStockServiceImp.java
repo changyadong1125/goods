@@ -1,4 +1,5 @@
 package com.goods.business.service.imp;
+
 import com.goods.business.mapper.*;
 import com.goods.business.service.InStockService;
 import com.goods.common.error.BusinessCodeEnum;
@@ -14,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -169,6 +171,7 @@ public class InStockServiceImp implements InStockService {
         //删除入库记录
         inStockMapper.deleteByPrimaryKey(id);
     }
+
     /**
      * return:
      * author: smile
@@ -183,6 +186,7 @@ public class InStockServiceImp implements InStockService {
             throw new BusinessException(BusinessCodeEnum.valueOf("修改失败！"));
         }
     }
+
     private void extracted(Long id, Integer status) {
         InStock inStock = inStockMapper.selectByPrimaryKey(id);
         inStock.setStatus(status);
